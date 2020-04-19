@@ -1,4 +1,6 @@
-[!image](images/logo128.png)
+# CloseTabs Extension
+
+![CloseTabs Logo](images/logo128.png)
 
 CloseTabs Extension is a Safari extension that removes old
 tabs and reduces the clutter in Safari.
