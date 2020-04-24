@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Getting started with Reverie
+title: Getting started with CloseTabs Extension for Safari
 permalink: /getting-started/
 ---
 
