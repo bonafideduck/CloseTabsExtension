@@ -4,9 +4,9 @@ title: Getting started with CloseTabs Extension for Safari
 permalink: /getting-started/
 ---
 
-### Download the CloseTabs Extension Application from the App Store
+### Install the CloseTabs Extension Application from the App Store
 
-The download link is currently TBD.
+Install the CloseTabs extension from the [App Store](https://itunes.apple.com/app/id1508584686).
 
 ### Run the CloseTabs extension and click the Install
 
