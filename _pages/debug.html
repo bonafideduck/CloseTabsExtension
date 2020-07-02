@@ -1,0 +1,28 @@
+---
+layout: page
+title: Debug
+permalink: /debug/
+---
+
+<div id="debug-top">
+In order to enable debugging, the CloseTabs extension must be installed
+and running and this page must be opened in Safari.
+</div>
+<div id="log-container">
+</div>
+
+<script>
+  let logContainer = null;
+  let debugTop = null;
+
+  window.addEventListener('load', function () {
+    logContainer = document.getElementById("log-container");
+    debugTop = document.getElementById("debug-top");
+    logContainer.addEventListener("click", clickedLogContainer);
+});
+
+function clickedLogContainer(e) {
+    let count = logContainer.querySelectorAll('DIV').length;
+    debugTop.textContent = count + " messages received.";
+}
+</script>
