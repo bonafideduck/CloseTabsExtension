@@ -66,12 +66,14 @@ permalink: /debug/
     let td = document.createElement("TD");
     for (key of Object.keys(data).sort()) {
       console.log("key", key)
+      let div = document.createElement("DIV");
       let title = document.createElement("B");
       let value = document.createElement("SPAN");
       title.innerText = key;
       value.innerText = `=${data[key]} `;
-      td.appendChild(title);
-      td.appendChild(value);
+      div.appendChild(title);
+      div.appendChild(value);
+      td.appendChild(div);
     }
     tr.appendChild(td);
   }
