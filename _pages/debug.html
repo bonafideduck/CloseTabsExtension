@@ -15,10 +15,7 @@ permalink: /debug/
    </div>
    <table id="pretty-debug-table" style="display:none">
       <tr>
-        <th>Time</th>
-        <th>Slug</th>
-        <th>Message</th>
-        <th>Index</th>
+        <th style="min-width: 350px;">Time Slug Message</th>
         <th>Extra</th>
       </tr>
     </table
@@ -51,20 +48,14 @@ permalink: /debug/
     waitingForFirstClick = false;
   }
 
-  function extractKeyToRow(tr, data, key) {
-    let value = data[key];
-    if (value == undefined) {
-      value = "-";
+  function addDataToRow(tr, data, keys) {
+    let td = document.createElement("TD");
+    if (keys == undefined) {
+      keys = Object.keys(data).sort()
     }
-    delete data[key];
-    let td = document.createElement("TD");
-    td.innerText = value;
-    tr.appendChild(td);
-  }
+    data = {...data};
 
-  function addDataToRow(tr, data) {
-    let td = document.createElement("TD");
-    for (key of Object.keys(data).sort()) {
+    for (key of keys) {
       console.log("key", key)
       let div = document.createElement("DIV");
       let title = document.createElement("B");
@@ -74,18 +65,16 @@ permalink: /debug/
       div.appendChild(title);
       div.appendChild(value);
       td.appendChild(div);
+      delete data[key];
     }
     tr.appendChild(td);
+    return data;
   }
 
-  function addRow(d) {
-    let data = {...d};
+  function addRow(data) {
     let tr = document.createElement("TR");
-    extractKeyToRow(tr, data, "time");
-    extractKeyToRow(tr, data, "slug");
-    extractKeyToRow(tr, data, "message");
-    extractKeyToRow(tr, data, "index");
-    addDataToRow(tr, data);
+    data = addDataToRow(tr, data, ["time", "slug", "message"]);
+    data = addDataToRow(tr, data);
     table.appendChild(tr);
   }
 
