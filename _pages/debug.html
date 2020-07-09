@@ -5,24 +5,99 @@ permalink: /debug/
 ---
 
 <div id="debug-top">
-In order to enable debugging, the CloseTabs extension must be installed
-and running and this page must be opened in Safari.
+  <div id="debug-disabled-warning" class="tinyletterForm">
+    In order to enable debugging, the CloseTabs extension must be installed
+    and running and this page must be opened in Safari.
+   </div>
+   <div id="debug-noexit-notice" style="display:none" class="tinyletterForm">
+     Note that none of the below data leaves your browser.  This web site
+     just supplies the HTML and javascript to format it and display it to you.
+   </div>
+   <table id="pretty-debug-table" style="display:none">
+      <tr>
+        <th>Time</th>
+        <th>Slug</th>
+        <th>Message</th>
+        <th>Index</th>
+        <th>Extra</th>
+      </tr>
+    </table
+   </table>
 </div>
-<div id="log-container">
+<div id="log-container" style="display:none">
 </div>
 
 <script>
   let logContainer = null;
   let debugTop = null;
+  let waitingForFirstClick = true;
+  let table = null;
+  let prevTableLen = 0;
 
   window.addEventListener('load', function () {
     logContainer = document.getElementById("log-container");
     debugTop = document.getElementById("debug-top");
+    table = document.getElementById("pretty-debug-table");
     logContainer.addEventListener("click", clickedLogContainer);
-});
+  });
+  
+  function handleFirstClick() {
+    if (!waitingForFirstClick) {
+      return;
+    }
+    document.getElementById("debug-disabled-warning").style.display = "none";
+    document.getElementById("debug-noexit-notice").style.display = "block";
+    table.style.display = "block";
+    waitingForFirstClick = false;
+  }
 
-function clickedLogContainer(e) {
-    let count = logContainer.querySelectorAll('DIV').length;
-    debugTop.textContent = count + " messages received.";
-}
+  function extractKeyToRow(tr, data, key) {
+    let value = data[key];
+    if (value == undefined) {
+      value = "-";
+    }
+    delete data[key];
+    let td = document.createElement("TD");
+    td.innerText = value;
+    tr.appendChild(td);
+  }
+
+  function addDataToRow(tr, data) {
+    let td = document.createElement("TD");
+    for (key of Object.keys(data).sort()) {
+      console.log("key", key)
+      let title = document.createElement("B");
+      let value = document.createElement("SPAN");
+      title.innerText = key;
+      value.innerText = `=${data[key]} `;
+      td.appendChild(title);
+      td.appendChild(value);
+    }
+    tr.appendChild(td);
+  }
+
+  function addRow(d) {
+    let data = {...d};
+    let tr = document.createElement("TR");
+    extractKeyToRow(tr, data, "time");
+    extractKeyToRow(tr, data, "slug");
+    extractKeyToRow(tr, data, "message");
+    extractKeyToRow(tr, data, "index");
+    addDataToRow(tr, data);
+    table.appendChild(tr);
+  }
+
+  function fillTable() {
+    let data = logContainer.querySelectorAll('DIV');
+    while (prevTableLen < data.length) {
+      let d = JSON.parse(data[prevTableLen].innerText);
+      addRow(d)
+      prevTableLen += 1;
+    }
+  }
+
+  function clickedLogContainer(e) {
+    handleFirstClick();
+    fillTable();
+  }
 </script>
