@@ -11,3 +11,5 @@ permalink: /known-issues/
 1. This tool has no special awarness of pinned tabs.  Pinned tabs will be treated like normal tabs.
 
 1. Different windows are not handled specially.  If you have Minimum Tabs set to 2 and have two windows with two tabs, the two oldest tabs will be removed. 
+
+1. On initial installation of CloseTabs, the menubar button may not work and restarting Safari may be required to get it working.
