@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# capture-demo - captures demo screenshots.
+#
+
+unset $verbose
+
+fail() {
+    echo $* >&2
+    exit 1
+}
+
+vecho() {
+    test -n "$verbose" || echo $*
+}
+
+usage() {
+    cat <<"    EOF" | cut -c8-
+        usage: capture-demo [-v] [-s|-p|-c] [FILENAME]
+            -v: Verbose output
+            -s: Safari capture
+            -p: Safari Popup capture
+            -c: Chrome capture
+            FILENAME: Use supplied filename (default=capture.png)
+    EOF
+    exit $1
+}
+
+parse() {
+    unset sflag pflag cflag fname verbose
+    fname=capture.png
+
+    while getopts "svhpc" o; do
+        case $o in
+            s) sflag=1 ;;
+            p) pflag=1 ;;
+            c) cflag=1 ;;
+            h) usage 0 ;;
+            v) verbose=1 ;;
+            ?) err=1 ;;
+        esac
+    done
+    shift $((OPTIND-1))
+
+    if [[ $# = 1 ]] ; then
+        fname=$1
+        shift
+    fi
+
+    if [ -n "$err" -o $# != 0 ] ; then
+        usage 1
+    fi
+}
+
+parse $*
+
+if [ -n "$cflag" -a -n "$pflag" ] ; then
+  osascript -e "tell app \"chrome\" to tell window 1
+  set bounds to {1,24,1280,822}
+  end"
+  open -a "Google Chrome.app"
+  sleep 2
+  #screencapture -R777,95,400,300 "$fname"
+  screencapture -R779,99,392,294 "$fname"
+  open -a terminal.app
+  convert "$fname" -resize 1280x800 "$fname"
+  open "$fname"
+elif [ -n "$cflag" ] ; then
+  osascript -e "tell app \"chrome\" to tell window 1
+  set bounds to {1,24,1280,822}
+  end"
+  open -a "Google Chrome.app"
+  sleep 4
+  screencapture -R0,23,1280,800 "$fname"
+  open -a terminal.app
+  convert "$fname" -resize 1280x800 "$fname"
+  open "$fname"
+elif [ -n "$pflag" ] ; then
+  osascript -e "tell app \"safari\" to tell window 1
+  set bounds to {1,24,1280,822}
+  end"
+  open -a safari.app
+  sleep 2
+  screencapture -R0,23,600,375 "$fname"
+  open -a terminal.app
+  convert "$fname" -resize 1280x800 "$fname"
+  open "$fname"
+else
+  osascript -e "tell app \"Safari\" to tell window 1
+  set bounds to {1,24,1280,822}
+  end"
+  open -a safari.app
+  sleep 4
+  screencapture -R0,23,1280,800 "$fname"
+  open -a terminal.app
+  convert "$fname" -resize 1280x800 "$fname"
+  open "$fname"
+fi
+
