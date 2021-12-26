@@ -1,8 +1,11 @@
 ---
 layout: page
-title: Getting started with CloseTabs Extension for Safari
+title: Getting started with DuckTabs (Chrome) and CloseTabs (Safari)
 permalink: /getting-started/
 ---
+### Install the DuctTabs Extension from the Chrome WebStore
+
+Install the DuckTabs extension from the [Chrome WebStore](https://chrome.google.com/webstore/search/DuckTabs).
 
 ### Install the CloseTabs Extension Application from the App Store
 

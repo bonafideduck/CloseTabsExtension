@@ -63,7 +63,7 @@ if [ -n "$cflag" -a -n "$pflag" ] ; then
   #screencapture -R777,95,400,300 "$fname"
   screencapture -R779,99,392,294 "$fname"
   open -a terminal.app
-  convert "$fname" -resize 1280x800 "$fname"
+  convert "$fname" -resize 1280x800\! "$fname"
   open "$fname"
 elif [ -n "$cflag" ] ; then
   osascript -e "tell app \"chrome\" to tell window 1
